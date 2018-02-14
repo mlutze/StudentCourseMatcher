@@ -21,13 +21,13 @@ public class FilesManager {
     }
 
     private FilesManager(File coursesFile, File qualificationsFile, File preferencesFile, File seatTypesFile,
-                         boolean allowEmptyPreferences, boolean allowUnknownPreferences)
+                         boolean allowBlankPreferences, boolean allowUnknownPreferences)
             throws IOException {
 
         // parse files
         qualifications = new QualificationsFileParser().parseQualificationsFile(qualificationsFile);
         courses = new CoursesFileParser().parseCoursesFile(coursesFile);
-        preferences = new PreferencesFileParser(allowEmptyPreferences).parsePreferencesFile(preferencesFile);
+        preferences = new PreferencesFileParser(allowBlankPreferences).parsePreferencesFile(preferencesFile);
         seatTypes = new SeatTypesFileParser().parseSeatTypesFile(seatTypesFile);
 
         // ensure qualifications and preferences files have same qualifications
@@ -80,7 +80,7 @@ public class FilesManager {
         private File qualificationsFile;
         private File preferencesFile;
         private File seatTypesFile;
-        private boolean allowEmptyPreferences;
+        private boolean allowBlankPreferences;
         private boolean allowUnknownPreferences;
 
         public Builder withCoursesFile(File coursesFile) {
@@ -103,8 +103,8 @@ public class FilesManager {
             return this;
         }
 
-        public Builder withAllowEmptyPreferences(boolean allowEmptyPreferences) {
-            this.allowEmptyPreferences = allowEmptyPreferences;
+        public Builder withAllowBlankPreferences(boolean allowBlankPreferences) {
+            this.allowBlankPreferences = allowBlankPreferences;
             return this;
         }
 
@@ -115,7 +115,7 @@ public class FilesManager {
 
         public FilesManager build() throws IOException {
             return new FilesManager(coursesFile, qualificationsFile, preferencesFile, seatTypesFile,
-                    allowEmptyPreferences, allowUnknownPreferences);
+                    allowBlankPreferences, allowUnknownPreferences);
         }
     }
 }

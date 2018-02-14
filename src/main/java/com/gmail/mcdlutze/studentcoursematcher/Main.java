@@ -39,10 +39,10 @@ public class Main {
     @Option(name = "-h", help = true, usage = "display usage information")
     private boolean help = false;
 
-    @Option(name = "-E", usage = "allow empty preferences")
-    private boolean allowEmptyPreferences;
+    @Option(name = "-b", usage = "allow blank preferences")
+    private boolean allowBlankPreferences;
 
-    @Option(name = "-U", usage = "allow unknown preferences")
+    @Option(name = "-u", usage = "allow unknown preferences")
     private boolean allowUnknownPreferences;
 
     @Option(name = "-a", required = true, usage = "alpha value")
@@ -53,9 +53,6 @@ public class Main {
 
     @Option(name = "-i", usage = "illegal assignment cost")
     private double illegalAssignmentCost = Double.NEGATIVE_INFINITY;
-
-    @Option(name = "-e", usage = "empty assignment cost")
-    private double emptyAssignmentCost = Double.NEGATIVE_INFINITY;
 
     private final CmdLineParser parser = new CmdLineParser(this, ParserProperties.defaults().withShowDefaults(false));
 
@@ -80,9 +77,6 @@ public class Main {
         if (illegalAssignmentCost == Double.NEGATIVE_INFINITY) {
             illegalAssignmentCost = alpha;
         }
-        if (emptyAssignmentCost == Double.NEGATIVE_INFINITY) {
-            emptyAssignmentCost = alpha;
-        }
         if (nonPreferenceAssignmentCost == Double.NEGATIVE_INFINITY) {
             nonPreferenceAssignmentCost = alpha;
         }
@@ -105,7 +99,7 @@ public class Main {
         FilesManager filesManager =
                 FilesManager.builder().withCoursesFile(coursesFile).withPreferencesFile(preferencesFile)
                         .withQualificationsFile(qualificationsFile).withSeatTypesFile(seatTypesFile)
-                        .withAllowEmptyPreferences(allowEmptyPreferences)
+                        .withAllowBlankPreferences(allowBlankPreferences)
                         .withAllowUnknownPreferences(allowUnknownPreferences).build();
         QualificationsManager qualificationsManager = new QualificationsManager();
         SeatTypesManager seatTypesManager =
@@ -123,7 +117,7 @@ public class Main {
                 filesManager.getCourses().keySet().stream().map(coursesManager::getCourse).collect(Collectors.toList());
 
         // run objects through algorithm
-        Solver solver = new Solver(alpha, nonPreferenceAssignmentCost, illegalAssignmentCost, emptyAssignmentCost);
+        Solver solver = new Solver(alpha, nonPreferenceAssignmentCost, illegalAssignmentCost);
         Map<Student, Seat> assignments = solver.solve(students, courses);
 
         // print output to file

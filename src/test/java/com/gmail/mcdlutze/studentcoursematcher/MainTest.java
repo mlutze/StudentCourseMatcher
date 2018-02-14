@@ -91,7 +91,7 @@ public class MainTest extends AbstractParserTest {
                 "-s", seatTypesFile.getPath(),
                 "-o", outputFile.getPath(),
                 "-a", "3.5",
-                "-U",
+                "-u",
         };
 
         Main.main(commands);

@@ -21,7 +21,7 @@ public class SolverTest {
 
     @Before
     public void setup() {
-        solver = new Solver(3.5, 3.5, 3.5, 3.5);
+        solver = new Solver(3.5, 3.5, 3.5);
     }
 
     @Test

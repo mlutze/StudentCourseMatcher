@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class PreferencesFileParser {
-    private final boolean allowEmptyPreferences;
+    private final boolean allowBlankPreferences;
 
-    public PreferencesFileParser(boolean allowEmptyPreferences) {
-        this.allowEmptyPreferences = allowEmptyPreferences;
+    public PreferencesFileParser(boolean allowBlankPreferences) {
+        this.allowBlankPreferences = allowBlankPreferences;
     }
 
     public Map<String, List<String>> parsePreferencesFile(File file) throws IOException {
@@ -27,7 +27,7 @@ public class PreferencesFileParser {
                 Set<String> preferenceSet = new HashSet<>();
                 for (int i = 1; i < record.size(); i++) {
                     String preference = record.get(i);
-                    if (preference.isEmpty() && !allowEmptyPreferences) {
+                    if (preference.isEmpty() && !allowBlankPreferences) {
                         throw new FileFormatException("Empty preference in preferences file: " + id);
                     }
                     if (!preferenceSet.add(preference) && !preference.isEmpty()) {

@@ -16,14 +16,11 @@ public class Solver {
     private final double alpha;
     private final double nonPreferenceAssignmentCost;
     private final double illegalAssignmentCost;
-    private final double emptyAssignmentCost;
 
-    public Solver(double alpha, double nonPreferenceAssignmentCost, double illegalAssignmentCost,
-                  double emptyAssignmentCost) {
+    public Solver(double alpha, double nonPreferenceAssignmentCost, double illegalAssignmentCost) {
         this.alpha = alpha;
         this.nonPreferenceAssignmentCost = nonPreferenceAssignmentCost;
         this.illegalAssignmentCost = illegalAssignmentCost;
-        this.emptyAssignmentCost = emptyAssignmentCost;
     }
 
     public Map<Student, Seat> solve(List<Student> students, List<Course> courses) {
@@ -77,6 +74,7 @@ public class Solver {
     }
 
     private double assignmentCost(Student student, Seat seat, int numPreferences) {
+        double emptyAssignmentCost = Math.max(illegalAssignmentCost, nonPreferenceAssignmentCost) + 1;
         double maxMatchCost = Math.pow(alpha, numPreferences - 1);
         double emptyMatchCost = maxMatchCost * emptyAssignmentCost;
         double illegalMatchCost = maxMatchCost * illegalAssignmentCost;
