@@ -1,0 +1,5 @@
+name,empty,Male,Female,International,Domestic
+optional,,,,,
+optionalDomestic,,,,,TRUE
+maleDomestic,FALSE,TRUE,,,TRUE
+femaleDomestic,FALSE,,TRUE,,TRUE
