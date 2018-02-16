@@ -98,7 +98,7 @@ public class Main {
 
         // create managers
         FilesManager filesManager =
-                FilesManager.builder().withCoursesFile(coursesFile).withPreferencesFile(preferencesFile)
+                FilesManager.newBuilder().withCoursesFile(coursesFile).withPreferencesFile(preferencesFile)
                         .withQualificationsFile(qualificationsFile).withSeatTypesFile(seatTypesFile)
                         .withAllowBlankPreferences(allowBlankPreferences)
                         .withAllowUnknownPreferences(allowUnknownPreferences).build();

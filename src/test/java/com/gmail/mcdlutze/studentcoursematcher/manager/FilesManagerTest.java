@@ -23,7 +23,7 @@ public class FilesManagerTest extends AbstractParserTest {
         File seatTypesFile = getFile("MainTest/singleMatchTest/seatTypes.csv");
 
         filesManager =
-                FilesManager.builder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
+                FilesManager.newBuilder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
                         .withPreferencesFile(preferencesFile).withCoursesFile(coursesFile).build();
 
 
@@ -60,7 +60,7 @@ public class FilesManagerTest extends AbstractParserTest {
         File seatTypesFile = getFile("manager/FilesManagerTest/unknownCourseTest/seatTypes.csv");
 
         filesManager =
-                FilesManager.builder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
+                FilesManager.newBuilder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
                         .withPreferencesFile(preferencesFile).withCoursesFile(coursesFile).build();
     }
 
@@ -72,7 +72,7 @@ public class FilesManagerTest extends AbstractParserTest {
         File seatTypesFile = getFile("manager/FilesManagerTest/unknownCourseTest/seatTypes.csv");
 
         filesManager =
-                FilesManager.builder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
+                FilesManager.newBuilder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
                         .withPreferencesFile(preferencesFile).withCoursesFile(coursesFile)
                         .withAllowUnknownPreferences(true).build();
         assertEquals(Collections.singletonList(""), filesManager.getPreferences().get("student0"));
@@ -87,7 +87,7 @@ public class FilesManagerTest extends AbstractParserTest {
         File seatTypesFile = getFile("manager/FilesManagerTest/differentStudentsTest/seatTypes.csv");
 
         filesManager =
-                FilesManager.builder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
+                FilesManager.newBuilder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
                         .withPreferencesFile(preferencesFile).withCoursesFile(coursesFile).build();
     }
 
@@ -99,7 +99,7 @@ public class FilesManagerTest extends AbstractParserTest {
         File seatTypesFile = getFile("manager/FilesManagerTest/unknownSeatTypeTest/seatTypes.csv");
 
         filesManager =
-                FilesManager.builder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
+                FilesManager.newBuilder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
                         .withPreferencesFile(preferencesFile).withCoursesFile(coursesFile).build();
     }
 

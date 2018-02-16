@@ -16,19 +16,17 @@ public class FilesManager {
     private final Map<String, List<String>> preferences;
     private final Map<String, Map<String, Ternean>> seatTypes;
 
-    public static Builder builder() {
+    public static Builder newBuilder() {
         return new Builder();
     }
 
-    private FilesManager(File coursesFile, File qualificationsFile, File preferencesFile, File seatTypesFile,
-                         boolean allowBlankPreferences, boolean allowUnknownPreferences)
-            throws IOException, FileMismatchException {
-
+    private FilesManager(Builder builder) throws FileMismatchException, IOException {
         // parse files
-        qualifications = new QualificationsFileParser().parseQualificationsFile(qualificationsFile);
-        courses = new CoursesFileParser().parseCoursesFile(coursesFile);
-        preferences = new PreferencesFileParser(allowBlankPreferences).parsePreferencesFile(preferencesFile);
-        seatTypes = new SeatTypesFileParser().parseSeatTypesFile(seatTypesFile);
+        qualifications = new QualificationsFileParser().parseQualificationsFile(builder.qualificationsFile);
+        courses = new CoursesFileParser().parseCoursesFile(builder.coursesFile);
+        preferences =
+                new PreferencesFileParser(builder.allowBlankPreferences).parsePreferencesFile(builder.preferencesFile);
+        seatTypes = new SeatTypesFileParser().parseSeatTypesFile(builder.seatTypesFile);
 
         // ensure qualifications and preferences files have same qualifications
         if (!qualifications.keySet().equals(preferences.keySet())) {
@@ -40,7 +38,7 @@ public class FilesManager {
             for (int i = 0; i < preferenceList.size(); i++) {
                 String preference = preferenceList.get(i);
                 if (!preference.isEmpty() && !courses.keySet().contains(preference)) {
-                    if (allowUnknownPreferences) {
+                    if (builder.allowUnknownPreferences) {
                         preferenceList.set(i, "");
                     } else {
                         throw new FileMismatchException("Preferences file contains unknown course: " + preference);
@@ -74,6 +72,7 @@ public class FilesManager {
     public Map<String, Map<String, Ternean>> getSeatTypes() {
         return seatTypes;
     }
+
 
     public static class Builder {
         private File coursesFile;
@@ -114,8 +113,7 @@ public class FilesManager {
         }
 
         public FilesManager build() throws IOException, FileMismatchException {
-            return new FilesManager(coursesFile, qualificationsFile, preferencesFile, seatTypesFile,
-                    allowBlankPreferences, allowUnknownPreferences);
+            return new FilesManager(this);
         }
     }
 }
