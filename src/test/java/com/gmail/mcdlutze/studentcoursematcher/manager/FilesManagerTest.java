@@ -103,4 +103,16 @@ public class FilesManagerTest extends AbstractParserTest {
                         .withPreferencesFile(preferencesFile).withCoursesFile(coursesFile).build();
     }
 
+    @Test(expected = FileMismatchException.class)
+    public void notEnoughSeatsTest() throws IOException, FileMismatchException {
+        File coursesFile = getFile("manager/FilesManagerTest/notEnoughSeatsTest/courses.csv");
+        File qualificationsFile = getFile("manager/FilesManagerTest/notEnoughSeatsTest/qualifications.csv");
+        File preferencesFile = getFile("manager/FilesManagerTest/notEnoughSeatsTest/preferences.csv");
+        File seatTypesFile = getFile("manager/FilesManagerTest/notEnoughSeatsTest/seatTypes.csv");
+
+        filesManager =
+                FilesManager.newBuilder().withSeatTypesFile(seatTypesFile).withQualificationsFile(qualificationsFile)
+                        .withPreferencesFile(preferencesFile).withCoursesFile(coursesFile).build();
+    }
+
 }

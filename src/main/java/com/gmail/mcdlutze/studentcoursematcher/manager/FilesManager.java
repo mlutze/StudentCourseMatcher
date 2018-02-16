@@ -55,6 +55,17 @@ public class FilesManager {
                 }
             }
         }
+
+        // ensure there are at least as many seats as students
+        int numSeats = 0;
+        for (Map<String, Integer> course : courses.values()) {
+            for (int seatCount : course.values()) {
+                numSeats += seatCount;
+            }
+        }
+        if (numSeats < qualifications.size()) {
+            throw new FileMismatchException("Courses file does not contain enough seats for students");
+        }
     }
 
     public Map<String, Set<String>> getQualifications() {
