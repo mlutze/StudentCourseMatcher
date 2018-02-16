@@ -97,8 +97,8 @@ public class MainTest extends AbstractParserTest {
         Main.main(commands);
 
         String[] expectedOut = {
-                "#1 choice: 271",
-                "#2 choice: 42",
+                "#1 choice: 275",
+                "#2 choice: 38",
                 "Non-preferences: 0",
                 "Illegal assignments: 0",
         };

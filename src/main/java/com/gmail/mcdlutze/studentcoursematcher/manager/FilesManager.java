@@ -5,9 +5,7 @@ import com.gmail.mcdlutze.studentcoursematcher.parser.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class FilesManager {
 
@@ -21,50 +19,88 @@ public class FilesManager {
     }
 
     private FilesManager(Builder builder) throws FileMismatchException, IOException {
-        // parse files
         qualifications = new QualificationsFileParser().parseQualificationsFile(builder.qualificationsFile);
         courses = new CoursesFileParser().parseCoursesFile(builder.coursesFile);
         preferences =
                 new PreferencesFileParser(builder.allowBlankPreferences).parsePreferencesFile(builder.preferencesFile);
         seatTypes = new SeatTypesFileParser().parseSeatTypesFile(builder.seatTypesFile);
 
-        // ensure qualifications and preferences files have same qualifications
-        if (!qualifications.keySet().equals(preferences.keySet())) {
+        if (!areStudentSetsConsistent()) {
             throw new FileMismatchException("Qualifications file and preferences file have different students");
         }
 
-        // ensure each preference is a course, convert unknown courses to EMPTY
+        if (builder.allowUnknownPreferences) {
+            convertUnknownPreferencesToEmpty();
+        } else {
+            Optional<String> unknownPreference = findUnknownPreference();
+            if (unknownPreference.isPresent()) {
+                throw new FileMismatchException("Preferences file contains unknown course: " + unknownPreference.get());
+            }
+        }
+
+        pushEmptyPreferencesToLast();
+
+        Optional<String> unknownSeatType = findUnknownSeatType();
+        if (unknownSeatType.isPresent()) {
+            throw new FileMismatchException("Courses file contains unknown seat type: " + unknownSeatType.get());
+        }
+
+        if (!areEnoughSeats()) {
+            throw new FileMismatchException("Courses file does not contain enough seats for students");
+        }
+
+    }
+
+    private boolean areStudentSetsConsistent() {
+        return qualifications.keySet().equals(preferences.keySet());
+    }
+
+    private Optional<String> findUnknownPreference() {
+        for (List<String> preferenceList : preferences.values()) {
+            for (String preference : preferenceList) {
+                if (!preference.isEmpty() && !courses.keySet().contains(preference)) {
+                    return Optional.of(preference);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    private void convertUnknownPreferencesToEmpty() {
         for (List<String> preferenceList : preferences.values()) {
             for (int i = 0; i < preferenceList.size(); i++) {
                 String preference = preferenceList.get(i);
                 if (!preference.isEmpty() && !courses.keySet().contains(preference)) {
-                    if (builder.allowUnknownPreferences) {
-                        preferenceList.set(i, "");
-                    } else {
-                        throw new FileMismatchException("Preferences file contains unknown course: " + preference);
-                    }
+                    preferenceList.set(i, "");
                 }
             }
         }
+    }
 
-        // ensure each course's seat type is a seat type
+    private Optional<String> findUnknownSeatType() {
         for (Map<String, Integer> seatTypeCount : courses.values()) {
             for (String seatType : seatTypeCount.keySet()) {
                 if (!seatTypes.keySet().contains(seatType)) {
-                    throw new FileMismatchException("Courses file contains unknown seat type: " + seatType);
+                    return Optional.of(seatType);
                 }
             }
         }
+        return Optional.empty();
+    }
 
-        // ensure there are at least as many seats as students
+    private boolean areEnoughSeats() {
         int numSeats = 0;
         for (Map<String, Integer> course : courses.values()) {
             for (int seatCount : course.values()) {
                 numSeats += seatCount;
             }
         }
-        if (numSeats < qualifications.size()) {
-            throw new FileMismatchException("Courses file does not contain enough seats for students");
+        return numSeats >= qualifications.size();
+    }
+
+    private void pushEmptyPreferencesToLast() {
+        for (List<String> preferenceList : preferences.values()) {
+            preferenceList.sort(Comparator.comparing(String::isEmpty));
         }
     }
 

@@ -41,7 +41,6 @@ public class PreferencesFileParser {
                     throw new FileFormatException("Duplicate entry in preference file: " + id);
                 }
 
-                preferences.sort(Comparator.comparing(String::isEmpty).reversed());
             }
         }
 
