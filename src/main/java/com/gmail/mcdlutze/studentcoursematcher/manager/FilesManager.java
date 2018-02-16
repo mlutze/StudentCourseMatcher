@@ -22,7 +22,7 @@ public class FilesManager {
 
     private FilesManager(File coursesFile, File qualificationsFile, File preferencesFile, File seatTypesFile,
                          boolean allowBlankPreferences, boolean allowUnknownPreferences)
-            throws IOException {
+            throws IOException, FileMismatchException {
 
         // parse files
         qualifications = new QualificationsFileParser().parseQualificationsFile(qualificationsFile);
@@ -113,7 +113,7 @@ public class FilesManager {
             return this;
         }
 
-        public FilesManager build() throws IOException {
+        public FilesManager build() throws IOException, FileMismatchException {
             return new FilesManager(coursesFile, qualificationsFile, preferencesFile, seatTypesFile,
                     allowBlankPreferences, allowUnknownPreferences);
         }

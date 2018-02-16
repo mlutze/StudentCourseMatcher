@@ -16,7 +16,7 @@ public class FilesManagerTest extends AbstractParserTest {
     private FilesManager filesManager;
 
     @Test
-    public void singleMatchTest() throws IOException {
+    public void singleMatchTest() throws IOException, FileMismatchException {
         File coursesFile = getFile("MainTest/singleMatchTest/courses.csv");
         File qualificationsFile = getFile("MainTest/singleMatchTest/qualifications.csv");
         File preferencesFile = getFile("MainTest/singleMatchTest/preferences.csv");
@@ -53,7 +53,7 @@ public class FilesManagerTest extends AbstractParserTest {
     }
 
     @Test(expected = FileMismatchException.class)
-    public void unknownCourseForbiddenTest() throws IOException {
+    public void unknownCourseForbiddenTest() throws IOException, FileMismatchException {
         File coursesFile = getFile("manager/FilesManagerTest/unknownCourseTest/courses.csv");
         File qualificationsFile = getFile("manager/FilesManagerTest/unknownCourseTest/qualifications.csv");
         File preferencesFile = getFile("manager/FilesManagerTest/unknownCourseTest/preferences.csv");
@@ -65,7 +65,7 @@ public class FilesManagerTest extends AbstractParserTest {
     }
 
     @Test
-    public void unknownCourseAllowedTest() throws IOException {
+    public void unknownCourseAllowedTest() throws IOException, FileMismatchException {
         File coursesFile = getFile("manager/FilesManagerTest/unknownCourseTest/courses.csv");
         File qualificationsFile = getFile("manager/FilesManagerTest/unknownCourseTest/qualifications.csv");
         File preferencesFile = getFile("manager/FilesManagerTest/unknownCourseTest/preferences.csv");
@@ -80,7 +80,7 @@ public class FilesManagerTest extends AbstractParserTest {
 
 
     @Test(expected = FileMismatchException.class)
-    public void differentStudentsTest() throws IOException {
+    public void differentStudentsTest() throws IOException, FileMismatchException {
         File coursesFile = getFile("manager/FilesManagerTest/differentStudentsTest/courses.csv");
         File qualificationsFile = getFile("manager/FilesManagerTest/differentStudentsTest/qualifications.csv");
         File preferencesFile = getFile("manager/FilesManagerTest/differentStudentsTest/preferences.csv");
@@ -92,7 +92,7 @@ public class FilesManagerTest extends AbstractParserTest {
     }
 
     @Test(expected = FileMismatchException.class)
-    public void unknownSeatTypeTest() throws IOException {
+    public void unknownSeatTypeTest() throws IOException, FileMismatchException {
         File coursesFile = getFile("manager/FilesManagerTest/unknownSeatTypeTest/courses.csv");
         File qualificationsFile = getFile("manager/FilesManagerTest/unknownSeatTypeTest/qualifications.csv");
         File preferencesFile = getFile("manager/FilesManagerTest/unknownSeatTypeTest/preferences.csv");

@@ -1,6 +1,7 @@
 package com.gmail.mcdlutze.studentcoursematcher;
 
 import com.gmail.mcdlutze.studentcoursematcher.analyzer.Analyzer;
+import com.gmail.mcdlutze.studentcoursematcher.exception.FileMismatchException;
 import com.gmail.mcdlutze.studentcoursematcher.manager.*;
 import com.gmail.mcdlutze.studentcoursematcher.object.Course;
 import com.gmail.mcdlutze.studentcoursematcher.object.Seat;
@@ -93,7 +94,7 @@ public class Main {
         parser.printUsage(System.out);
     }
 
-    private void run() throws IOException {
+    private void run() throws IOException, FileMismatchException {
 
         // create managers
         FilesManager filesManager =
